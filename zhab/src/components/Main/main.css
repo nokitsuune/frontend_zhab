@@ -1,0 +1,154 @@
+.payment{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 300px;
+    width: 400px;
+    boxShadow: 24;
+    p: 4;
+    background: #3A4339;
+    border-radius: 24px;
+    color: white;
+}
+.payment_form{
+    display: flex;
+    position: absolute;
+    width: 50%;
+    height: 287px;
+    left: 44%;
+    top: 120px;
+
+    background: #3A4339;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 49px;
+    color: #FFFFFF;
+}
+
+.input_payment{
+    height: 60px;
+    width: 350px;
+    left: 25px;
+    top: 15px;
+    margin-top: 20px;
+}
+.btn_payment{
+    height: 45px;
+    right: 25px;
+    top: 15px;
+    background: #718E67!important;
+    color: #FFFFFF!important;
+}
+/*MAIN FORM STYLE*/
+.main_form{
+    display: flex;
+    justify-content: right;
+    position: absolute;
+    width: 50%;
+    height: 287px;
+    left: 44%;
+    top: 120px;
+
+    background: #3A4339;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 49px;
+    color: #FFFFFF;
+}
+.text_main_form{
+    position: absolute;
+    width: 361px;
+    height: 44px;
+    left: 50px;
+    top: 30px;
+
+    font-weight: 700;
+    line-height: 44px;
+}
+
+.news_pic{
+    display: flex;
+    height: 80%;
+    margin-top: 4%;
+    margin-right: 4%;
+}
+/*MAIN FORM STYLE END*/
+
+/*NAVBAR STYLE*/
+.navbarik{
+    background: #3A4339!important;
+}
+
+.icon{
+    height: 40px!important;
+    width: 40px!important;
+
+}
+.navbarik_btns{
+    font-weight: 700!important;
+}
+.navlink{
+    color: #FFFFFF;
+}
+.navlink:hover {
+    color: #718E67
+}
+
+.notification{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    boxShadow: 24;
+    p: 4;
+    background: #3A4339;
+    border-radius: 24px;
+    color: white;
+
+}
+/*NAVBAR STYLE END*/
+
+/*WALLET STYLE*/
+.wallet{
+    position: absolute;
+    width: 30%;
+    height: 600px;
+    left: 7%;
+    top: 120px;
+
+    background: #3A4339;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 49px;
+    color: #FFFFFF;
+}
+.cards{
+    height: 250px;
+}
+.text_wal{
+    position: absolute;
+    width: 361px;
+    height: 44px;
+    left: 50px;
+    top: 30px;
+
+    font-weight: 700;
+    line-height: 44px;
+    /* identical to box height */
+}
+.text_check{
+    position: absolute;
+    width: 361px;
+    height: 44px;
+    left: 50px;
+    top: 280px;
+
+    font-weight: 700;
+    line-height: 44px;
+    /* identical to box height */
+}
+.btn_add{
+    color: #718E67!important;
+    left: 50px;
+    top: 75px
+}
+/*WALLET STYLE END*/

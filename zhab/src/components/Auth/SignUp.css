@@ -1,0 +1,78 @@
+.name{
+    position: absolute;
+    width: 42%;
+    height: 96px;
+    left: 5%;
+    top: 150px;
+}
+.surname{
+    position: absolute;
+    width: 42%;
+    left: 10%;
+    top: 150px;
+}
+.sign_password{
+    position: absolute;
+    width: 89%;
+    height: 96px;
+    left: 5%;
+    top: 150px;
+}
+.sign_btn{
+    width: 89%;
+    height: 65px;
+    left: 5%;
+    top: 150px;
+    color: #FFFFFF!important;
+
+    background: #718E67!important;
+    border: 1px solid #718E67;
+    border-radius: 13px;
+
+}
+.sign_link{
+    position: absolute;
+    color: #718E67;
+    height: 65px;
+    left: 39%;
+    bottom: 2%;
+
+
+
+}
+.sign_link:hover {
+    color: #FFFFFF;
+}
+.sign_text_link{
+    font-weight: 700;
+    line-height: 44px;
+}
+
+
+.sign_form{
+    position: absolute;
+    width: 80%;
+    height: 600px;
+    left: 10%;
+    top: 10%;
+
+    background: #3A4339;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 64px;
+}
+.sign_text{
+    position: absolute;
+    height: 44px;
+    left: 35%;
+    top: 50px;
+
+    font-style: normal;
+    font-weight: 700;
+    line-height: 44px;
+    /* identical to box height */
+
+
+    color: #FFFFFF;
+
+
+}

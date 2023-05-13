@@ -1,0 +1,95 @@
+html{
+    background-color: #28322C;
+}
+.greet{
+    position: absolute;
+    width: 30%;
+    height: 44px;
+    right: 15%;
+    top: 15%;
+    color: #718E67;
+
+    font-weight: 700;
+}
+.frog{
+    position: absolute;
+    height: 400px;
+    right: 18%;
+    top: 20% ;
+}
+.link {
+    color: #718E67;
+    position: absolute;
+    width: 30%;
+    height: 74px;
+    right: 15%;
+    top: 550px;
+
+}
+.link:hover {
+    color: #FFFFFF;
+}
+.text_link{
+    font-weight: 700;
+    line-height: 44px;
+}
+.btn_log{
+    height: 65px;
+    top: 150px;
+    width: 80%;
+    left: 10%;
+    color: #FFFFFF!important;
+
+    background: #718E67!important;
+    border: 1px solid #718E67;
+    border-radius: 13px;
+
+}
+
+.login{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    height: 96px;
+
+    top: 150px;
+}
+.password{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    height: 96px;
+    top: 150px;
+}
+.form{
+    position: absolute;
+    width: 30%;
+    height: 500px;
+    left: 10%;
+    top: 104px;
+    bottom: 104px;
+
+    background: #3A4339;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 64px;
+}
+.text_head{
+    position: absolute;
+    width: 60%;
+    height: 44px;
+    left: 20%;
+    top: 50px;
+
+    font-weight: 700;
+    line-height: 44px;
+    /* identical to box height */
+
+
+    color: #FFFFFF;
+
+
+}
