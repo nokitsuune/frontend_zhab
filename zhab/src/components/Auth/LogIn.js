@@ -78,7 +78,7 @@ function LogIn() {
                                        className='login'
                                        id="outlined"
                                        color="success"
-                                       label="Эл. почта" variant="outlined"/>
+                                       label="Логин" variant="outlined"/>
                             <TextField value={password} onChange={(e) => setPassword(e.currentTarget.value)}
                                        className='password'
                                        id="outlined"

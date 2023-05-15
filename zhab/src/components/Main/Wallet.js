@@ -28,9 +28,8 @@ export default function Wallet() {
             })
         }
 
-        setAccId(pk+1)
 
-    }, [ accId ]);
+    }, [ pk]);
     useEffect(() => {
 
         fetch(`http://127.0.0.1:8000/user/${pk+1}/`, {
@@ -78,8 +77,7 @@ export default function Wallet() {
                 const formDataContract = new FormData()
                 formDataContract.append('status', 1)
                 console.log(result.data.pk)
-                setAccId(result.data.pk)
-                formDataContract.append('account', accId)
+                formDataContract.append('account', result.data.pk)
                 formDataContract.append('auth_user', pk+1)
                 await axios(`http://127.0.0.1:8000/contract/`, {
                     method: 'POST',

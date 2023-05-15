@@ -7,7 +7,7 @@ import logo from "../../images/logo.png";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import {Card, InputAdornment, List, ListItem, ListItemButton, ListItemText, TextField} from "@mui/material";
+import {Card, InputAdornment, List, ListItem, ListItemButton, ListItemText, Modal, TextField} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
@@ -22,17 +22,22 @@ import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {Title} from "@mui/icons-material";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
 
 
 function Admin() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [loading,setLoading] = useState(false);
-
+    const [req, setReq] = useState(0)
     const [contract, setContract] = useState([])
+    const [contracts, setContracts] = useState([])
     const [item, setItem] = useState([])
     const [items, setItems] = useState([])
     const [search, setSearch] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
 
     const handleOpenUserMenu = (event) => {
@@ -44,6 +49,51 @@ function Admin() {
         }
         return ('')
     }
+    async function AcceptRequest(contrId) {
+        await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+            method: 'GET',
+        }).then(async (result) => {
+                result.data.status = 2;
+                console.log(result.data);
+                await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+                    method: 'PUT',
+                    data: result.data,
+                })
+            }
+        )
+
+        /*fetch(`http://127.0.0.1:8000/contract/${contrId}/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then(async (result) => {
+
+                result.status = 2;
+                await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+                    method: 'PUT',
+                    data: result.data,
+                })
+            })*/
+
+
+
+    }
+    /*async function AcceptRequest1(reqId) {
+
+        const formData = new FormData()
+
+        formData.append('authuser', pk+1)
+        formData.append('account_num', GetRandomAccount())
+        formData.append('balance', 20000)
+
+
+        e.preventDefault();
+        await axios(`http://127.0.0.1:8000/contract/`, {
+            method: 'PUT',
+            data: formData,
+
+        })
+    }*/
+
     function GetUser(userId) {
 
         fetch(`http://127.0.0.1:8000/user/${userId}/`, {
@@ -56,9 +106,21 @@ function Admin() {
 
 
     }
-    function GetContract() {
+    function GetContracts(userId) {
 
-        fetch(`http://127.0.0.1:8000/contract/`, {
+        fetch(`http://127.0.0.1:8000/contract/?search=${userId}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setContracts(result);
+                console.log(result);
+            })
+
+
+    }
+    function GetContract(contrId) {
+
+        fetch(`http://127.0.0.1:8000/contract/${contrId}`, {
             method: "GET"})
             .then(response => response.json())
             .then((result) => {
@@ -68,8 +130,14 @@ function Admin() {
 
 
     }
-    function Alert(userId) {
-        if (contract.status ==1 && contract.auth_user == userId){
+    function SetRequest(contrId){
+        setReq(contrId)
+        console.log(contrId)
+
+    }
+    function Alert() {
+
+        if (contract.status ===1){
             return <Button
                 color="error"
                 variant="contained"
@@ -204,8 +272,8 @@ function Admin() {
                                             <ListItemButton
                                                 onClick={(e) => {
                                                     GetUser(client.pk)
-                                                    GetContract()
-                                                    Alert(client.pk)
+                                                    GetContracts(client.pk)
+
                                             }}>
                                                 <ListItemText sx={{marginLeft:'25px'}} primary={client.username} />
 
@@ -263,12 +331,102 @@ function Admin() {
 
                     <h5 className="head_info">Карты</h5>
 
+
                     <div className='cards_admin'>
 
                     </div>
 
                     <h5 className="head_info">Счета</h5>
+                    {
+                        Object.entries(contracts).map(([id, contr]) => (
+                            <div key={id} >
+
+                                {contr.status===1 &&
+                                    <Button
+                                        onClick={(e) => {
+                                            handleOpen()
+                                            SetRequest(contr.pk)
+                                        }}
+                                        color="error"
+                                        variant="contained"
+                                        size="lg">
+                                        Заявка
+                                    </Button>
+
+                                }
+
+                            </div>
+                        ))
+                    }
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box className="notification">
+                            <Typography id="modal-modal-title" variant="h6" component="h2" sx={{
+                                fontWeight: 700,
+                                marginTop: '20px',
+                                marginLeft: '30px',
+                            }} >
+                                Заявка на открытие счета
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2, fontWeight: 700,
+                                marginTop: '20px',
+                                marginLeft: '30px',
+                                marginBottom: '20px',
+
+                            }}>
+                                <Button
+                                    onClick={(e) => {
+                                        AcceptRequest(req)
+                                    }}
+                                    color="success"
+                                    variant="contained"
+                                    size="lg">
+                                    Принять
+                                </Button>
+                                <Button
+                                    sx={{marginLeft: '30px'}}
+                                    color="error"
+                                    variant="contained"
+                                    size="lg">
+                                    Отказ
+                                </Button>
+                            </Typography>
+
+                        </Box>
+                    </Modal>
+
+
                     <div className='cards_admin'>
+                        {
+                            Object.entries(contracts).map(([id, contr]) => (
+                                <div key={id} >
+                                    {contr.status===2 && <List >
+                                        <ListItem disablePadding>
+                                            <ListItemButton
+                                                onClick={(e) => {
+                                                    GetContract(contr.pk)
+                                                }}>
+                                                <ListItemText sx={{marginLeft:'25px'}} primary={contr.account} />
+
+                                            </ListItemButton>
+                                        </ListItem>
+
+                                    </List>
+                                    }
+
+
+
+
+
+
+
+                                </div>
+                            ))
+                        }
 
                     </div>
 
