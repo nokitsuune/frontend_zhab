@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 
 import Container from "@mui/material/Container";
@@ -7,7 +7,7 @@ import logo from "../../images/logo.png";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import {InputAdornment, TextField} from "@mui/material";
+import {Card, InputAdornment, List, ListItem, ListItemButton, ListItemText, TextField} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
@@ -17,14 +17,84 @@ import SearchIcon from '@mui/icons-material/Search';
 import CachedIcon from '@mui/icons-material/Cached';
 
 import './Admin.css'
+import {Col, Row} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {Title} from "@mui/icons-material";
+import Button from "@mui/material/Button";
 
 
 
 function Admin() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [loading,setLoading] = useState(false);
+
+    const [contract, setContract] = useState([])
+    const [item, setItem] = useState([])
+    const [items, setItems] = useState([])
+    const [search, setSearch] = useState([]);
+
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
+    function getFilter (search) {
+        if (search) {
+            return `?search=${search}`
+        }
+        return ('')
+    }
+    function GetUser(userId) {
+
+        fetch(`http://127.0.0.1:8000/user/${userId}/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setItem(result);
+                console.log(result);
+            })
+
+
+    }
+    function GetContract() {
+
+        fetch(`http://127.0.0.1:8000/contract/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setContract(result);
+                console.log(result);
+            })
+
+
+    }
+    function Alert(userId) {
+        if (contract.status ==1 && contract.auth_user == userId){
+            return <Button
+                color="error"
+                variant="contained"
+                size="lg">
+                Заявка
+            </Button>
+        }
+        else
+        return
+
+
+
+    }
+    useEffect(() => {
+        setLoading(true)
+        fetch(`http://127.0.0.1:8000/user/${getFilter(search)}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setItems(result);
+                console.log(result);
+            })
+        setLoading(false)
+        console.log(items)
+    }, [search]);
 
 
     const handleCloseUserMenu = () => {
@@ -99,26 +169,7 @@ function Admin() {
                 </Container>
             </AppBar>
             <div>
-                <div className="info">
-                    <h5 className="head_info">Основная информация</h5>
-                    <div className='general'>
-
-                    </div>
-
-                    <h5 className="head_info">Карты</h5>
-                    <div className='cards_admin'>
-
-                    </div>
-
-                    <h5 className="head_info">Счета</h5>
-                    <div className='cards_admin'>
-
-                    </div>
-
-
-
-                </div>
-                {/*Кошелек*/}
+                {/*Клиенты*/}
                 <div className="wallet">
                     <div>
                         <h4 className='text_wal'>Клиенты</h4>
@@ -143,8 +194,88 @@ function Admin() {
                             }}
                         />
                     </div>
+                    <div style={{marginTop: '45px'}}>
+                        {
+                            Object.entries(items).map(([id, client]) => (
+                                <div key={id} >
+
+                                    <List >
+                                        <ListItem disablePadding>
+                                            <ListItemButton
+                                                onClick={(e) => {
+                                                    GetUser(client.pk)
+                                                    GetContract()
+                                                    Alert(client.pk)
+                                            }}>
+                                                <ListItemText sx={{marginLeft:'25px'}} primary={client.username} />
+
+                                            </ListItemButton>
+                                        </ListItem>
+
+                                    </List>
+                                </div>
+                            ))
+                        }
+                    </div>
 
                 </div>
+                {/*Основная информация о клиенте*/}
+                <div className="info">
+                    <h5 className="head_info">Основная информация</h5>
+                    <div className='general'>
+                        <div className='info_text'>
+                            <div className='just'>Фамилия</div>
+
+                            <div className='green_field'>
+                                {item.last_name}
+                            </div >
+                        </div>
+
+                        <div className='info_text' >
+                            <div className='just'>Имя</div>
+
+                            <div className='green_field'>
+                                {item.first_name}
+                            </div >
+                        </div>
+                        <div className='info_text'>
+                            <div className='just'>Почта</div>
+
+                            <div className='green_field'>
+                                {item.email}
+                            </div >
+                        </div>
+                        <div className='info_text'>
+                            <div className='just'>Телефон</div>
+
+                            <div className='green_field'>
+                                {item.phone}
+                            </div >
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+                    <h5 className="head_info">Карты</h5>
+
+                    <div className='cards_admin'>
+
+                    </div>
+
+                    <h5 className="head_info">Счета</h5>
+                    <div className='cards_admin'>
+
+                    </div>
+
+
+
+                </div>
+
 
 
             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignUp from './components/Auth/SignUp'
 import LogIn from './components/Auth/LogIn'
 import Admin from './components/Admin/Admin'
@@ -19,15 +19,18 @@ const App = () => {
 
   return (
       <ThemeProvider theme={darkTheme}>
-            <Routes>
-                <Route path='/' element={ <LogIn/>}></Route>
-                <Route path='/SignUp' element={ <SignUp/>}></Route>
-                <Route path='/Admin' element={ <Admin/>}></Route>
-                <Route path='/main' element={ <MainClient/>}></Route>
-                <Route path='/payments' element={ <Payments/>}></Route>
-                <Route path='/history' element={ <History/>}></Route>
+          <BrowserRouter>
+              <Routes>
+                  <Route path='/' element={ <LogIn/>}></Route>
+                  <Route path='/SignUp' element={ <SignUp/>}></Route>
+                  <Route path='/Admin' element={ <Admin/>}></Route>
+                  <Route path='/main' element={ <MainClient/>}></Route>
+                  <Route path='/payments' element={ <Payments/>}></Route>
+                  <Route path='/history' element={ <History/>}></Route>
 
-            </Routes>
+              </Routes>
+          </BrowserRouter>
+
       </ThemeProvider>
   )
 }

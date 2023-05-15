@@ -16,6 +16,8 @@ import logo from '../../images/logo.png';
 import './main.css'
 import {Badge, Modal} from "@mui/material";
 import {Link, useMatch, useResolvedPath} from "react-router-dom";
+import {LOGOUT} from "../AuthRedux/actions";
+import {useDispatch} from "react-redux";
 
 
 
@@ -25,6 +27,8 @@ export default function Navbar() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const dispatch = useDispatch()
 
 
     const handleOpenUserMenu = (event) => {
@@ -151,6 +155,12 @@ export default function Navbar() {
 
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Typography
+                                        onClick={(e) => {
+                                            dispatch({
+                                                type:LOGOUT,
+                                                payload: 'log'
+                                            });}
+                                        }
                                         sx={{color: '#718E67'}}
                                         textAlign="center"
                                         component="a"

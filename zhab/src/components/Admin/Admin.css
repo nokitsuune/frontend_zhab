@@ -10,6 +10,24 @@
     border-radius: 49px;
     color: #FFFFFF;
 }
+
+.info_text{
+    margin-top: 15px;
+}
+.just{
+    margin-left: 10px;
+    display:inline;
+
+}
+.green_field{
+    margin-left: 10px;
+    display:inline;
+    height: 50px;
+    text-align: center;
+    background: #718E67;
+    border: 1px solid #718E67;
+    border-radius: 7px;
+}
 .general{
     box-sizing: border-box;
 
