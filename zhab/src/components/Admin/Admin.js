@@ -30,6 +30,7 @@ function Admin() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [loading,setLoading] = useState(false);
     const [req, setReq] = useState(0)
+    const [selectedClient, setSelectedClient] = useState(0)
     const [contract, setContract] = useState([])
     const [contracts, setContracts] = useState([])
     const [item, setItem] = useState([])
@@ -189,6 +190,11 @@ function Admin() {
         console.log(contrId)
 
     }
+    function SetClient(userId){
+        setSelectedClient(userId)
+        console.log(userId)
+
+    }
     function Alert() {
 
         if (contract.status ===1){
@@ -284,9 +290,16 @@ function Admin() {
                 <div className="wallet">
                     <div>
                         <h4 className='text_wal'>Клиенты</h4>
-                        <IconButton style={{marginTop:'33px', left: '80%'}}>
+                        {/*ОБНОВИТЬ*/}
+                        <IconButton
+                            onClick={(e) => {
+                                AdminIsOnline()
+                                GetContracts(selectedClient)
+                            }}
+                            style={{marginTop:'33px', left: '80%'}}>
                             <CachedIcon />
                         </IconButton>
+                        {/*ПОИСК*/}
                         <TextField
                             className="search"
                             id="filled-search"
@@ -297,7 +310,7 @@ function Admin() {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment>
-                                        <IconButton>
+                                        <IconButton >
                                             <SearchIcon />
                                         </IconButton>
                                     </InputAdornment>
@@ -305,6 +318,7 @@ function Admin() {
                             }}
                         />
                     </div>
+                    {/*СПИСОК КЛИЕНТОВ*/}
                     <div style={{marginTop: '45px'}}>
                         {
                             Object.entries(items).map(([id, client]) => (
@@ -379,30 +393,6 @@ function Admin() {
                     <div className='cards_admin'>
 
                     </div>
-
-                    <h5 className="head_info">Счета</h5>
-                    {
-                        Object.entries(contracts).map(([id, contr]) => (
-                            <div key={id} >
-
-                                {contr.status===1 &&
-                                    <Button
-                                        onClick={(e) => {
-                                            handleOpen()
-                                            SetRequest(contr.pk)
-                                            AdminIsOnline()
-                                        }}
-                                        color="error"
-                                        variant="contained"
-                                        size="lg">
-                                        Заявка
-                                    </Button>
-
-                                }
-
-                            </div>
-                        ))
-                    }
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -428,6 +418,7 @@ function Admin() {
                                         AcceptRequest(req)
                                         AdminIsOnline()
                                         handleClose()
+                                        GetContracts(selectedClient)
                                     }}
                                     color="success"
                                     variant="contained"
@@ -439,6 +430,7 @@ function Admin() {
                                         DeclineRequest(req)
                                         AdminIsOnline()
                                         handleClose()
+                                        GetContracts(selectedClient)
                                     }}
                                     sx={{marginLeft: '30px'}}
 
@@ -451,8 +443,34 @@ function Admin() {
 
                         </Box>
                     </Modal>
+                    {/*ЗАЯВКА*/}
+                    <h5 className="head_info">Счета</h5>
+                    {
+                        Object.entries(contracts).map(([id, contr]) => (
+                            <div key={id} >
+
+                                {contr.status===1 &&
+                                    <Button
+                                        onClick={(e) => {
+                                            handleOpen()
+                                            SetRequest(contr.pk)
+                                            SetClient(contr.auth_user)
+                                            AdminIsOnline()
+                                        }}
+                                        color="error"
+                                        variant="contained"
+                                        size="lg">
+                                        Заявка
+                                    </Button>
+
+                                }
+
+                            </div>
+                        ))
+                    }
 
 
+                    {/*НОМЕРА СЧЕТОВ*/}
                     <div className='cards_admin'>
                         {
                             Object.entries(contracts).map(([id, contr]) => (
@@ -467,12 +485,6 @@ function Admin() {
 
                                     </List>
                                     }
-
-
-
-
-
-
 
                                 </div>
                             ))
