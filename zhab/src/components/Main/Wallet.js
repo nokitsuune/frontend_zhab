@@ -55,11 +55,29 @@ export default function Wallet() {
 
 
     }
+
+    async function SendKafkaMessage() {
+        try {
+            const response = await fetch('http://localhost:8000/grpc/?id_card=1&number_card=1234567890&cvc=123&pin=456&contract_id=789', {
+                method: "GET",
+            });
+            console.log('Status:', response.status);
+            if (response.status === 500) {
+                throw Error('Internal server error');
+                // или возвращать что-то другое в зависимости от вашей потребности
+            }
+            return true;
+        } catch (error) {
+            console.error('Error:', error);
+            return false;
+        }
+    }
+
     async function CreateAccount(e) {
 
 
         const formData = new FormData()
-
+        SendKafkaMessage()
         console.log(GetRandomAccount())
 
             formData.append('authuser', pk+1)
