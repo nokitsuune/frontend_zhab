@@ -168,9 +168,9 @@ function Admin() {
 
     }
 
-    function AdminIsOnline() {
+    async function AdminIsOnline() {
 
-        fetch(`http://127.0.0.1:8000/online/`, {
+        await fetch(`http://127.0.0.1:8000/online/`, {
             method: "GET"})
             .then(response => response.json())
             .then((result) => {
