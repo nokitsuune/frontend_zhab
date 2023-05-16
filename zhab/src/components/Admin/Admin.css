@@ -41,6 +41,7 @@
 
 }
 .cards_admin{
+    overflow: scroll;
     box-sizing: border-box;
 
     width: 80%;

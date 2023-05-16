@@ -19,10 +19,11 @@ import CachedIcon from '@mui/icons-material/Cached';
 import './Admin.css'
 import {Col, Row} from "react-bootstrap";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Title} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import {LOGOUT} from "../AuthRedux/actions";
 
 
 
@@ -32,6 +33,7 @@ function Admin() {
     const [req, setReq] = useState(0)
     const [selectedClient, setSelectedClient] = useState(0)
     const [contract, setContract] = useState([])
+    const [acc, setAccount] = useState([])
     const [contracts, setContracts] = useState([])
     const [item, setItem] = useState([])
     const [items, setItems] = useState([])
@@ -39,6 +41,14 @@ function Admin() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const dispatch = useDispatch()
+
+    const {
+        isSubmitted,
+        token,
+        username,
+        pk
+    } = useSelector((state) => state.user);
 
 
     const handleOpenUserMenu = (event) => {
@@ -51,6 +61,14 @@ function Admin() {
         return ('')
     }
     useEffect(() => {
+        fetch(`http://127.0.0.1:8000/user/${pk + 1}/`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then((result) => {
+                console.log(result);
+                console.log(pk + 1)
+            })
         setLoading(true)
         fetch(`http://127.0.0.1:8000/user/${getFilter(search)}`, {
             method: "GET"})
@@ -173,6 +191,18 @@ function Admin() {
 
 
     }
+    function GetAccount(userId) {
+
+        fetch(`http://127.0.0.1:8000/account/?search=${userId}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setAccount(result);
+                console.log(result);
+            })
+
+
+    }
     function GetContract(contrId) {
 
         fetch(`http://127.0.0.1:8000/contract/${contrId}`, {
@@ -274,6 +304,12 @@ function Admin() {
 
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Typography
+                                        onClick={(e) => {
+                                            dispatch({
+                                                type:LOGOUT,
+                                                payload: 'log'
+                                            });}
+                                        }
                                         textAlign="center"
                                         component="a"
                                         href="/"
@@ -295,6 +331,7 @@ function Admin() {
                             onClick={(e) => {
                                 AdminIsOnline()
                                 GetContracts(selectedClient)
+                                GetAccount(selectedClient)
                             }}
                             style={{marginTop:'33px', left: '80%'}}>
                             <CachedIcon />
@@ -319,7 +356,7 @@ function Admin() {
                         />
                     </div>
                     {/*СПИСОК КЛИЕНТОВ*/}
-                    <div style={{marginTop: '45px'}}>
+                    <div style={{marginTop: '45px', overflow:"scroll"}}>
                         {
                             Object.entries(items).map(([id, client]) => (
                                 <div key={id} >
@@ -331,6 +368,8 @@ function Admin() {
                                                     AdminIsOnline()
                                                     GetUser(client.pk)
                                                     GetContracts(client.pk)
+                                                    GetAccount(client.pk)
+                                                    setSelectedClient(client.pk)
 
                                             }}>
                                                 <ListItemText sx={{marginLeft:'25px'}} primary={client.username} />
@@ -419,6 +458,7 @@ function Admin() {
                                         AdminIsOnline()
                                         handleClose()
                                         GetContracts(selectedClient)
+                                        GetAccount(selectedClient)
                                     }}
                                     color="success"
                                     variant="contained"
@@ -431,6 +471,7 @@ function Admin() {
                                         AdminIsOnline()
                                         handleClose()
                                         GetContracts(selectedClient)
+                                        GetAccount(selectedClient)
                                     }}
                                     sx={{marginLeft: '30px'}}
 
@@ -474,20 +515,37 @@ function Admin() {
                     <div className='cards_admin'>
                         {
                             Object.entries(contracts).map(([id, contr]) => (
-                                <div key={id} >
-                                    {contr.status===2 && <List >
-                                        <ListItem disablePadding>
-                                            <ListItemButton>
-                                                <ListItemText sx={{marginLeft:'25px'}} primary={contr.account} />
 
-                                            </ListItemButton>
-                                        </ListItem>
+                                Object.entries(acc).map(([schet_pk, schet]) => (
 
-                                    </List>
-                                    }
+                                    <div key={schet_pk} >
+                                        {contr.status===2 && contr.account=== schet.pk &&
 
-                                </div>
-                            ))
+
+                                            <List>
+
+                                                <ListItem disablePadding>
+                                                    <ListItemButton>
+                                                        {/*{GetAccount(contr.account)}*/}
+
+                                                            <ListItemText sx={{marginLeft:'25px'}} primary={schet.account_num} />
+
+
+
+
+                                                    </ListItemButton>
+                                                </ListItem>
+
+                                            </List>
+
+
+
+                                        }
+
+                                    </div>
+                                ))
+                            )
+                            )
                         }
 
                     </div>
