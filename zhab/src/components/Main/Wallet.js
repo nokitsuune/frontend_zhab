@@ -9,6 +9,8 @@ import {Title} from "@mui/icons-material";
 export default function Wallet() {
     const [userId, setUserId] = useState([])
     const [loading, setLoading] = useState(false);
+
+    const [contracts, setContracts] = useState([])
     const [accNum, setAccNum] = useState(0)
     const [accId, setAccId] = useState(0)
     const {
@@ -31,7 +33,6 @@ export default function Wallet() {
 
     }, [pk]);
     useEffect(() => {
-
         fetch(`http://127.0.0.1:8000/user/${pk + 1}/`, {
             method: "GET"
         })
@@ -40,6 +41,13 @@ export default function Wallet() {
                 setUserId(result);
                 console.log(result);
                 console.log(pk + 1)
+            })
+        fetch(`http://127.0.0.1:8000/contract/?status=2&search=${pk+1}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setContracts(result);
+                console.log(result);
             })
 
 
@@ -57,7 +65,7 @@ export default function Wallet() {
 
     }
 
-    async function SendKafkaMessage(authuser, account_num, balance) {
+    /*async function SendKafkaMessage(authuser, account_num, balance) {
         try {
             const response = await fetch(`http://localhost:8000/grpc/?id_card=${authuser}&number_card=${account_num}&cvc=${balance}&pin=456&contract_id=789`, {
                 method: "GET",
@@ -72,17 +80,18 @@ export default function Wallet() {
             console.log('Error:', error);
             return false;
         }
-    }
+    }*/
 
     async function CreateAccount(e) {
-        const bool = await SendKafkaMessage(pk + 1, GetRandomAccount(), 20000);
-        if (bool){
+        // const bool = await SendKafkaMessage(pk + 1, GetRandomAccount(), 20000);
+        /*if (bool){*/
             const formData = new FormData()
 
             console.log(GetRandomAccount())
 
             formData.append('authuser', pk + 1)
-            formData.append('account_num', GetRandomAccount())
+            setAccNum(GetRandomAccount())
+            formData.append('account_num', accNum)
             formData.append('balance', 20000)
 
 
@@ -104,7 +113,7 @@ export default function Wallet() {
                     })
                 }
             )
-        }
+
     }
 
     const handleSubmit = (e) => {

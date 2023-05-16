@@ -25,7 +25,7 @@ function LogIn() {
         formData.append('password', password)
         console.log(password,username)
 
-        setUsername(JSON.stringify(username));
+        //setUsername(JSON.stringify(username));
         // Вызов API login
         e.preventDefault();
         await axios(`http://127.0.0.1:8000/auth/token/login/`, {
@@ -70,8 +70,9 @@ function LogIn() {
         <div>
 
                 <div className='form'>
+
                     {token !== '' ?
-                        <div><Navigate to="/main"/></div> :
+                        <div><Navigate to={username === 'admin' ? '/admin': "/main"}/></div> :
                         <div>
                             <h4 className='text_head'>Вход в ЖАБ Онлайн</h4>
                             <TextField value={username} onChange={(e) => setUsername(e.currentTarget.value)}
@@ -88,15 +89,29 @@ function LogIn() {
                         </div>
                     }
 
+
+
                     <div>
-                        <Link to='/main'>
-                            <Button onClick={(e) => handleSubmit(e)}
-                                    className='btn_log'
-                                    variant="contained"
-                                    htmlType="submit" size="lg">
-                                Войти
-                            </Button>
-                        </Link>
+                        {username === 'admin' ?
+                            <Link to='/admin'>
+                                <Button onClick={(e) => handleSubmit(e)}
+                                        className='btn_log'
+                                        variant="contained"
+                                        htmlType="submit" size="lg">
+                                    Админ
+                                </Button>
+                            </Link>
+                            :
+                            <Link to='/main'>
+                                <Button onClick={(e) => handleSubmit(e)}
+                                        className='btn_log'
+                                        variant="contained"
+                                        htmlType="submit" size="lg">
+                                    Войти
+                                </Button>
+                            </Link>
+                        }
+
 
                     </div>
 
