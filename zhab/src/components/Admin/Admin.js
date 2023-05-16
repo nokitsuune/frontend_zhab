@@ -30,6 +30,7 @@ function Admin() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [loading,setLoading] = useState(false);
     const [req, setReq] = useState(0)
+    const [selectedClient, setSelectedClient] = useState(0)
     const [contract, setContract] = useState([])
     const [contracts, setContracts] = useState([])
     const [item, setItem] = useState([])
@@ -49,11 +50,53 @@ function Admin() {
         }
         return ('')
     }
+    useEffect(() => {
+        setLoading(true)
+        fetch(`http://127.0.0.1:8000/user/${getFilter(search)}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setItems(result);
+                console.log(result);
+            })
+        setLoading(false)
+        AdminIsOnline()
+        console.log(items)
+    }, [search]);
+
     async function AcceptRequest(contrId) {
         await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
             method: 'GET',
         }).then(async (result) => {
                 result.data.status = 2;
+                console.log(result.data);
+                await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+                    method: 'PUT',
+                    data: result.data,
+                })
+            }
+        )
+
+        /*fetch(`http://127.0.0.1:8000/contract/${contrId}/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then(async (result) => {
+
+                result.status = 2;
+                await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+                    method: 'PUT',
+                    data: result.data,
+                })
+            })*/
+
+
+
+    }
+    async function DeclineRequest(contrId) {
+        await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
+            method: 'GET',
+        }).then(async (result) => {
+                result.data.status = 3;
                 console.log(result.data);
                 await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
                     method: 'PUT',
@@ -106,6 +149,18 @@ function Admin() {
 
 
     }
+
+    function AdminIsOnline() {
+
+        fetch(`http://127.0.0.1:8000/online/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                console.log(result);
+            })
+
+
+    }
     function GetContracts(userId) {
 
         fetch(`http://127.0.0.1:8000/contract/?search=${userId}`, {
@@ -135,6 +190,11 @@ function Admin() {
         console.log(contrId)
 
     }
+    function SetClient(userId){
+        setSelectedClient(userId)
+        console.log(userId)
+
+    }
     function Alert() {
 
         if (contract.status ===1){
@@ -151,18 +211,7 @@ function Admin() {
 
 
     }
-    useEffect(() => {
-        setLoading(true)
-        fetch(`http://127.0.0.1:8000/user/${getFilter(search)}`, {
-            method: "GET"})
-            .then(response => response.json())
-            .then((result) => {
-                setItems(result);
-                console.log(result);
-            })
-        setLoading(false)
-        console.log(items)
-    }, [search]);
+
 
 
     const handleCloseUserMenu = () => {
@@ -241,9 +290,16 @@ function Admin() {
                 <div className="wallet">
                     <div>
                         <h4 className='text_wal'>Клиенты</h4>
-                        <IconButton style={{marginTop:'33px', left: '80%'}}>
+                        {/*ОБНОВИТЬ*/}
+                        <IconButton
+                            onClick={(e) => {
+                                AdminIsOnline()
+                                GetContracts(selectedClient)
+                            }}
+                            style={{marginTop:'33px', left: '80%'}}>
                             <CachedIcon />
                         </IconButton>
+                        {/*ПОИСК*/}
                         <TextField
                             className="search"
                             id="filled-search"
@@ -254,7 +310,7 @@ function Admin() {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment>
-                                        <IconButton>
+                                        <IconButton >
                                             <SearchIcon />
                                         </IconButton>
                                     </InputAdornment>
@@ -262,6 +318,7 @@ function Admin() {
                             }}
                         />
                     </div>
+                    {/*СПИСОК КЛИЕНТОВ*/}
                     <div style={{marginTop: '45px'}}>
                         {
                             Object.entries(items).map(([id, client]) => (
@@ -271,6 +328,7 @@ function Admin() {
                                         <ListItem disablePadding>
                                             <ListItemButton
                                                 onClick={(e) => {
+                                                    AdminIsOnline()
                                                     GetUser(client.pk)
                                                     GetContracts(client.pk)
 
@@ -335,29 +393,6 @@ function Admin() {
                     <div className='cards_admin'>
 
                     </div>
-
-                    <h5 className="head_info">Счета</h5>
-                    {
-                        Object.entries(contracts).map(([id, contr]) => (
-                            <div key={id} >
-
-                                {contr.status===1 &&
-                                    <Button
-                                        onClick={(e) => {
-                                            handleOpen()
-                                            SetRequest(contr.pk)
-                                        }}
-                                        color="error"
-                                        variant="contained"
-                                        size="lg">
-                                        Заявка
-                                    </Button>
-
-                                }
-
-                            </div>
-                        ))
-                    }
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -381,6 +416,9 @@ function Admin() {
                                 <Button
                                     onClick={(e) => {
                                         AcceptRequest(req)
+                                        AdminIsOnline()
+                                        handleClose()
+                                        GetContracts(selectedClient)
                                     }}
                                     color="success"
                                     variant="contained"
@@ -388,7 +426,14 @@ function Admin() {
                                     Принять
                                 </Button>
                                 <Button
+                                    onClick={(e) => {
+                                        DeclineRequest(req)
+                                        AdminIsOnline()
+                                        handleClose()
+                                        GetContracts(selectedClient)
+                                    }}
                                     sx={{marginLeft: '30px'}}
+
                                     color="error"
                                     variant="contained"
                                     size="lg">
@@ -398,18 +443,41 @@ function Admin() {
 
                         </Box>
                     </Modal>
+                    {/*ЗАЯВКА*/}
+                    <h5 className="head_info">Счета</h5>
+                    {
+                        Object.entries(contracts).map(([id, contr]) => (
+                            <div key={id} >
+
+                                {contr.status===1 &&
+                                    <Button
+                                        onClick={(e) => {
+                                            handleOpen()
+                                            SetRequest(contr.pk)
+                                            SetClient(contr.auth_user)
+                                            AdminIsOnline()
+                                        }}
+                                        color="error"
+                                        variant="contained"
+                                        size="lg">
+                                        Заявка
+                                    </Button>
+
+                                }
+
+                            </div>
+                        ))
+                    }
 
 
+                    {/*НОМЕРА СЧЕТОВ*/}
                     <div className='cards_admin'>
                         {
                             Object.entries(contracts).map(([id, contr]) => (
                                 <div key={id} >
                                     {contr.status===2 && <List >
                                         <ListItem disablePadding>
-                                            <ListItemButton
-                                                onClick={(e) => {
-                                                    GetContract(contr.pk)
-                                                }}>
+                                            <ListItemButton>
                                                 <ListItemText sx={{marginLeft:'25px'}} primary={contr.account} />
 
                                             </ListItemButton>
@@ -417,12 +485,6 @@ function Admin() {
 
                                     </List>
                                     }
-
-
-
-
-
-
 
                                 </div>
                             ))
