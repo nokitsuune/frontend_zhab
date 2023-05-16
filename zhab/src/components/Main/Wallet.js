@@ -45,7 +45,7 @@ export default function Wallet() {
 
     }, [pk]);
 
-    function GetRandomAccount() {
+    async function GetRandomAccount() {
 
         fetch('http://127.0.0.1:8000/getRandomAccount/', {
             method: "GET",
@@ -75,14 +75,15 @@ export default function Wallet() {
     }
 
     async function CreateAccount(e) {
-        const bool = await SendKafkaMessage(pk + 1, GetRandomAccount(), 20000);
+        const account = await GetRandomAccount()
+        const bool = await SendKafkaMessage(pk + 1, account, 20000);
         if (bool){
             const formData = new FormData()
 
-            console.log(GetRandomAccount())
+            console.log(await GetRandomAccount())
 
             formData.append('authuser', pk + 1)
-            formData.append('account_num', GetRandomAccount())
+            formData.append('account_num', account)
             formData.append('balance', 20000)
 
 
