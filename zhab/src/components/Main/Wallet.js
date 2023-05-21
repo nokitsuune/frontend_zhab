@@ -2,26 +2,46 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import {ADD_PK} from "../AuthRedux/actions";
 import {useSelector} from "react-redux";
-import {Title} from "@mui/icons-material";
+import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField} from "@mui/material";
 
 export default function Wallet() {
-    const [userId, setUserId] = useState([])
     const [loading, setLoading] = useState(false);
 
     const [contracts, setContracts] = useState([])
+    const [acc, setAccount] = useState([])
     const [accNum, setAccNum] = useState(0)
-    const [accId, setAccId] = useState(0)
     const {
-        isSubmitted,
-        token,
-        username,
         pk
     } = useSelector((state) => state.user);
 
 
     useEffect(() => {
+        fetch(`http://127.0.0.1:8000/user/${pk}/`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then((result) => {
+                console.log(result);
+                console.log(pk)
+            })
+        fetch(`http://127.0.0.1:8000/contract/?status=2&auth_user=${pk}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setContracts(result);
+                console.log(result);
+            })
+        fetch(`http://127.0.0.1:8000/account/?authuser=${pk}`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then((result) => {
+                setAccount(result);
+                console.log(result);
+            })
         if (GetRandomAccount() === 0) {
             fetch('http://127.0.0.1:8000/getRandomAccount/', {
                 method: "GET",
@@ -29,26 +49,7 @@ export default function Wallet() {
                 setAccNum(resp)
             })
         }
-
-
-    }, [pk]);
-    useEffect(() => {
-        fetch(`http://127.0.0.1:8000/user/${pk + 1}/`, {
-            method: "GET"
-        })
-            .then(response => response.json())
-            .then((result) => {
-                setUserId(result);
-                console.log(result);
-                console.log(pk + 1)
-            })
-        fetch(`http://127.0.0.1:8000/contract/?status=2&search=${pk+1}`, {
-            method: "GET"})
-            .then(response => response.json())
-            .then((result) => {
-                setContracts(result);
-                console.log(result);
-            })
+        setLoading(false)
 
 
     }, [pk]);
@@ -89,7 +90,7 @@ export default function Wallet() {
 
             console.log(GetRandomAccount())
 
-            formData.append('authuser', pk + 1)
+            formData.append('authuser', pk)
             setAccNum(GetRandomAccount())
             formData.append('account_num', accNum)
             formData.append('balance', 20000)
@@ -106,7 +107,7 @@ export default function Wallet() {
                     formDataContract.append('status', 1)
                     console.log(result.data.pk)
                     formDataContract.append('account', result.data.pk)
-                    formDataContract.append('auth_user', pk + 1)
+                    formDataContract.append('auth_user', pk)
                     await axios(`http://127.0.0.1:8000/contract/`, {
                         method: 'POST',
                         data: formDataContract,
@@ -129,6 +130,48 @@ export default function Wallet() {
             </div>
             <div>
                 <h4 className='text_check'>Счета</h4>
+                <div className="accounts">
+                    {
+                        Object.entries(contracts).map(([id, contr]) => (
+
+                                Object.entries(acc).map(([schet_pk, schet]) => (
+
+                                    <div key={schet_pk}>
+                                        {contr.status === 2 && contr.account === schet.pk &&
+
+
+                                            <List>
+
+                                                <ListItem sx={{marginLeft: '45px'}} disablePadding>
+                                                    <ListItemIcon>
+                                                        <AccountBalanceWalletIcon sx={{color:'#718E67'}} className="icon" />
+
+                                                    </ListItemIcon>
+
+                                                    <ListItemText
+                                                                  secondary={schet.account_num}/>
+                                                    <br />
+
+
+                                                </ListItem>
+                                                <ListItem sx={{marginLeft: '85px'}}>
+                                                    <h6>{schet.balance} ₽</h6>
+
+                                                </ListItem>
+
+                                            </List>
+
+
+                                        }
+
+                                    </div>
+                                ))
+                            )
+                        )
+                    }
+
+                </div>
+
                 <Button className="btn_add"
                         onClick={(e) => {
                             handleSubmit(e)

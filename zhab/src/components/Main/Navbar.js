@@ -79,20 +79,14 @@ export default function Navbar() {
                                 </CustomLink>
 
                             </Button>
-                            <Button sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                <CustomLink to='/history' >
-                                    История
-                                </CustomLink>
 
-                            </Button>
 
                         </Box>
 
                         {/*Notification and user*/}
                         <Box sx={{ flexGrow: 0 }}>
                             {/*Notification start*/}
-                            <IconButton onClick={handleOpen} sx={{color: '#718E67', height: '50px', width:'50px'}}
+                            {/*<IconButton onClick={handleOpen} sx={{color: '#718E67', height: '50px', width:'50px'}}
                                         size="large"
                                         aria-label="show 17 new notifications"
                                         color="inherit"
@@ -100,7 +94,7 @@ export default function Navbar() {
                                 <Badge badgeContent={2} color="error">
                                     <NotificationsIcon className="icon" />
                                 </Badge>
-                            </IconButton>
+                            </IconButton>*/}
                             <Modal
                                 open={open}
                                 onClose={handleClose}

@@ -1,3 +1,5 @@
+
+
 .payment{
     position: absolute;
     top: 50%;
@@ -45,14 +47,20 @@
     justify-content: right;
     position: absolute;
     width: 50%;
+    min-width: 450px;
     height: 287px;
-    left: 44%;
+    margin-left: 45%;
     top: 120px;
 
     background: #3A4339;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
     border-radius: 49px;
     color: #FFFFFF;
+}
+@media screen and (max-width: 900px) {
+    div.main_form {
+        display: none;
+    }
 }
 .text_main_form{
     position: absolute;
@@ -111,7 +119,8 @@
 /*WALLET STYLE*/
 .wallet{
     position: absolute;
-    width: 30%;
+    min-width: 300px;
+    width: 25%;
     height: 600px;
     left: 7%;
     top: 120px;
@@ -124,23 +133,22 @@
 .cards{
     height: 250px;
 }
+.accounts{
+    height: 200px;
+    overflow: scroll;
+}
 .text_wal{
-    position: absolute;
-    width: 361px;
     height: 44px;
-    left: 50px;
-    top: 30px;
+    margin-left: 50px;
+    margin-top: 30px;
 
     font-weight: 700;
     line-height: 44px;
     /* identical to box height */
 }
 .text_check{
-    position: absolute;
-    width: 361px;
     height: 44px;
-    left: 50px;
-    top: 280px;
+    margin-left: 50px;
 
     font-weight: 700;
     line-height: 44px;
@@ -148,7 +156,6 @@
 }
 .btn_add{
     color: #718E67!important;
-    left: 50px;
-    top: 75px
+    margin-left: 50px!important;
 }
 /*WALLET STYLE END*/

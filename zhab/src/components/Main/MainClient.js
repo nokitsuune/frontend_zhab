@@ -11,12 +11,12 @@ function MainClient() {
 
 
     return (
-        <div>
+        <div style={{ display: "-ms-flexbox"}}>
             <Navbar />
             <div>
                 <div className="main_form">
                     <h4 className="text_main_form">Новости</h4>
-                    <h6 style={{marginTop:'80px', marginLeft:'50px'}}>If you see this TOAD in lefortovo park, you shouldn't lick it - and this is why</h6>
+                    <h6 style={{marginTop:'80px', marginLeft:'50px', marginRight: '20px'}}>If you see this TOAD in lefortovo park, you shouldn't lick it - and this is why</h6>
                     <div className="news_pic">
                         <img src={frog}/>
                     </div>
@@ -24,8 +24,11 @@ function MainClient() {
 
 
                 </div>
+                <div style={{flex: "none"}}>
+                    <Wallet />
+                </div>
                 {/*Кошелек*/}
-                <Wallet />
+
             </div>
 
 

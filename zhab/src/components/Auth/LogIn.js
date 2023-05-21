@@ -12,7 +12,6 @@ function LogIn() {
 
     const dispatch = useDispatch()
     const{
-        isSubmitted,
         token
     } = useSelector((state)=> state.user);
 
@@ -47,9 +46,7 @@ function LogIn() {
                     }
                 })
                     .then((result) => {
-                        setUser(result.data.id);
                         console.log(result.data);
-                        console.log(user);
                         dispatch({
                             type:ADD_PK,
                             payload: result.data
@@ -85,7 +82,9 @@ function LogIn() {
                                        id="outlined"
                                        color="success"
                                        label="Пароль"
-                                       variant="outlined"/>
+                                       variant="outlined"
+
+                            />
                         </div>
                     }
 

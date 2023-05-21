@@ -21,7 +21,7 @@ const initialState = {
             isSubmitted: state.isSubmitted,
             token: state.token,
             username: action.payload.username,
-            pk: action.payload.id-1
+            pk: action.payload.id
 
           }
           case LOGOUT:

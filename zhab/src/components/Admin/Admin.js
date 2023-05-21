@@ -26,10 +26,9 @@ import axios from "axios";
 import {LOGOUT} from "../AuthRedux/actions";
 
 
-
 function Admin() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [req, setReq] = useState(0)
     const [selectedClient, setSelectedClient] = useState(0)
     const [contract, setContract] = useState([])
@@ -44,9 +43,6 @@ function Admin() {
     const dispatch = useDispatch()
 
     const {
-        isSubmitted,
-        token,
-        username,
         pk
     } = useSelector((state) => state.user);
 
@@ -54,24 +50,27 @@ function Admin() {
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
-    function getFilter (search) {
+
+    function getFilter(search) {
         if (search) {
             return `?search=${search}`
         }
         return ('')
     }
+
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/user/${pk + 1}/`, {
+        fetch(`http://127.0.0.1:8000/user/${pk}/`, {
             method: "GET"
         })
             .then(response => response.json())
             .then((result) => {
                 console.log(result);
-                console.log(pk + 1)
+                console.log(pk)
             })
         setLoading(true)
         fetch(`http://127.0.0.1:8000/user/${getFilter(search)}`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 setItems(result);
@@ -108,8 +107,8 @@ function Admin() {
             })*/
 
 
-
     }
+
     async function DeclineRequest(contrId) {
         await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
             method: 'GET',
@@ -136,8 +135,8 @@ function Admin() {
             })*/
 
 
-
     }
+
     /*async function AcceptRequest1(reqId) {
 
         const formData = new FormData()
@@ -158,7 +157,8 @@ function Admin() {
     function GetUser(userId) {
 
         fetch(`http://127.0.0.1:8000/user/${userId}/`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 setItem(result);
@@ -171,7 +171,8 @@ function Admin() {
     async function AdminIsOnline() {
 
         await fetch(`http://127.0.0.1:8000/online/`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 console.log(result);
@@ -179,10 +180,12 @@ function Admin() {
 
 
     }
+
     function GetContracts(userId) {
 
         fetch(`http://127.0.0.1:8000/contract/?search=${userId}`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 setContracts(result);
@@ -191,10 +194,12 @@ function Admin() {
 
 
     }
+
     function GetAccount(userId) {
 
         fetch(`http://127.0.0.1:8000/account/?search=${userId}`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 setAccount(result);
@@ -203,10 +208,12 @@ function Admin() {
 
 
     }
+
     function GetContract(contrId) {
 
         fetch(`http://127.0.0.1:8000/contract/${contrId}`, {
-            method: "GET"})
+            method: "GET"
+        })
             .then(response => response.json())
             .then((result) => {
                 setContract(result);
@@ -215,33 +222,33 @@ function Admin() {
 
 
     }
-    function SetRequest(contrId){
+
+    function SetRequest(contrId) {
         setReq(contrId)
         console.log(contrId)
 
     }
-    function SetClient(userId){
+
+    function SetClient(userId) {
         setSelectedClient(userId)
         console.log(userId)
 
     }
+
     function Alert() {
 
-        if (contract.status ===1){
+        if (contract.status === 1) {
             return <Button
                 color="error"
                 variant="contained"
                 size="lg">
                 Заявка
             </Button>
-        }
-        else
-        return
-
+        } else
+            return
 
 
     }
-
 
 
     const handleCloseUserMenu = () => {
@@ -250,11 +257,11 @@ function Admin() {
 
     return (
         <div>
-            <AppBar className='navbarik' position="static" >
+            <AppBar className='navbarik' position="static">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/*LOGOTIP*/}
-                        <img src={logo} width={40} height={40}  alt={'logo'}/>
+                        <img src={logo} width={40} height={40} alt={'logo'}/>
                         <Typography
                             variant="h6"
                             noWrap
@@ -262,7 +269,7 @@ function Admin() {
                             href="/admin"
                             sx={{
                                 mr: 2,
-                                display: {md: 'flex' },
+                                display: {md: 'flex'},
                                 fontWeight: 700,
                                 color: 'inherit',
                                 textDecoration: 'none',
@@ -270,14 +277,15 @@ function Admin() {
                         >
                             ЖАБ
                         </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}></Box>
 
                         {/*Notification and user*/}
-                        <Box sx={{ flexGrow: 0 }}>
+                        <Box sx={{flexGrow: 0}}>
                             {/*Notification start*/}
                             {/*notification end*/}
                             <Tooltip title="Профиль">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: '#718E67', height: '50px', width:'50px'}}
+                                <IconButton onClick={handleOpenUserMenu}
+                                            sx={{p: 0, color: '#718E67', height: '50px', width: '50px'}}
                                             size="large"
                                             aria-label="account of current user"
                                             aria-controls="menu-appbar"
@@ -286,7 +294,7 @@ function Admin() {
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: '45px' }}
+                                sx={{mt: '45px'}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -306,14 +314,15 @@ function Admin() {
                                     <Typography
                                         onClick={(e) => {
                                             dispatch({
-                                                type:LOGOUT,
+                                                type: LOGOUT,
                                                 payload: 'log'
-                                            });}
+                                            });
+                                        }
                                         }
                                         textAlign="center"
                                         component="a"
                                         href="/"
-                                        style={{ textDecoration: 'none' }}
+                                        style={{textDecoration: 'none'}}
                                         className="navlink">Выход</Typography>
                                 </MenuItem>
                             </Menu>
@@ -333,8 +342,8 @@ function Admin() {
                                 GetContracts(selectedClient)
                                 GetAccount(selectedClient)
                             }}
-                            style={{marginTop:'33px', left: '80%'}}>
-                            <CachedIcon />
+                            style={{marginTop: '33px', left: '80%'}}>
+                            <CachedIcon/>
                         </IconButton>
                         {/*ПОИСК*/}
                         <TextField
@@ -347,8 +356,8 @@ function Admin() {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment>
-                                        <IconButton >
-                                            <SearchIcon />
+                                        <IconButton>
+                                            <SearchIcon/>
                                         </IconButton>
                                     </InputAdornment>
                                 )
@@ -356,12 +365,12 @@ function Admin() {
                         />
                     </div>
                     {/*СПИСОК КЛИЕНТОВ*/}
-                    <div style={{marginTop: '45px', overflow:"scroll"}}>
+                    <div style={{marginTop: '45px', overflow: "scroll"}}>
                         {
                             Object.entries(items).map(([id, client]) => (
-                                <div key={id} >
+                                <div key={id}>
 
-                                    <List >
+                                    <List>
                                         <ListItem disablePadding>
                                             <ListItemButton
                                                 onClick={(e) => {
@@ -371,8 +380,8 @@ function Admin() {
                                                     GetAccount(client.pk)
                                                     setSelectedClient(client.pk)
 
-                                            }}>
-                                                <ListItemText sx={{marginLeft:'25px'}} primary={client.username} />
+                                                }}>
+                                                <ListItemText sx={{marginLeft: '25px'}} primary={client.username}/>
 
                                             </ListItemButton>
                                         </ListItem>
@@ -393,35 +402,30 @@ function Admin() {
 
                             <div className='green_field'>
                                 {item.last_name}
-                            </div >
+                            </div>
                         </div>
 
-                        <div className='info_text' >
+                        <div className='info_text'>
                             <div className='just'>Имя</div>
 
                             <div className='green_field'>
                                 {item.first_name}
-                            </div >
+                            </div>
                         </div>
                         <div className='info_text'>
                             <div className='just'>Почта</div>
 
                             <div className='green_field'>
                                 {item.email}
-                            </div >
+                            </div>
                         </div>
                         <div className='info_text'>
                             <div className='just'>Телефон</div>
 
                             <div className='green_field'>
                                 {item.phone}
-                            </div >
+                            </div>
                         </div>
-
-
-
-
-
 
 
                     </div>
@@ -443,10 +447,11 @@ function Admin() {
                                 fontWeight: 700,
                                 marginTop: '20px',
                                 marginLeft: '30px',
-                            }} >
+                            }}>
                                 Заявка на открытие счета
                             </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2, fontWeight: 700,
+                            <Typography id="modal-modal-description" sx={{
+                                mt: 2, fontWeight: 700,
                                 marginTop: '20px',
                                 marginLeft: '30px',
                                 marginBottom: '20px',
@@ -485,30 +490,39 @@ function Admin() {
                         </Box>
                     </Modal>
                     {/*ЗАЯВКА*/}
-                    <h5 className="head_info">Счета</h5>
-                    {
-                        Object.entries(contracts).map(([id, contr]) => (
-                            <div key={id} >
+                    <div >
+                        <div className="head_info" style={{display:"inline-block"}}>
+                            <h5>Счета</h5>
+                        </div>
 
-                                {contr.status===1 &&
-                                    <Button
-                                        onClick={(e) => {
-                                            handleOpen()
-                                            SetRequest(contr.pk)
-                                            SetClient(contr.auth_user)
-                                            AdminIsOnline()
-                                        }}
-                                        color="error"
-                                        variant="contained"
-                                        size="lg">
-                                        Заявка
-                                    </Button>
+                        <div className="zayavka">
+                            {
+                                Object.entries(contracts).map(([id, contr]) => (
+                                    <div key={id} style={{marginTop:"3px"}}>
 
-                                }
+                                        {contr.status === 1 &&
+                                            <Button
+                                                onClick={(e) => {
+                                                    handleOpen()
+                                                    SetRequest(contr.pk)
+                                                    SetClient(contr.auth_user)
+                                                    AdminIsOnline()
+                                                }}
+                                                color="error"
+                                                variant="contained"
+                                                size="lg">
+                                                Заявка
+                                            </Button>
 
-                            </div>
-                        ))
-                    }
+                                        }
+
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+
 
 
                     {/*НОМЕРА СЧЕТОВ*/}
@@ -516,48 +530,40 @@ function Admin() {
                         {
                             Object.entries(contracts).map(([id, contr]) => (
 
-                                Object.entries(acc).map(([schet_pk, schet]) => (
+                                    Object.entries(acc).map(([schet_pk, schet]) => (
 
-                                    <div key={schet_pk} >
-                                        {contr.status===2 && contr.account=== schet.pk &&
-
-
-                                            <List>
-
-                                                <ListItem disablePadding>
-                                                    <ListItemButton>
-                                                        {/*{GetAccount(contr.account)}*/}
-
-                                                            <ListItemText sx={{marginLeft:'25px'}} primary={schet.account_num} />
+                                        <div key={schet_pk}>
+                                            {contr.status === 2 && contr.account === schet.pk &&
 
 
+                                                <List>
+
+                                                    <ListItem disablePadding>
+
+                                                            <ListItemText sx={{marginLeft: '25px',marginTop:"23px"}}
+                                                                          primary={schet.account_num}/>
 
 
-                                                    </ListItemButton>
-                                                </ListItem>
+                                                    </ListItem>
 
-                                            </List>
-
+                                                </List>
 
 
-                                        }
+                                            }
 
-                                    </div>
-                                ))
-                            )
+                                        </div>
+                                    ))
+                                )
                             )
                         }
 
                     </div>
 
 
-
                 </div>
 
 
-
             </div>
-
 
 
         </div>

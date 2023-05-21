@@ -1,4 +1,4 @@
-.info{
+.info {
     position: absolute;
     width: 50%;
     height: 600px;
@@ -11,24 +11,27 @@
     color: #FFFFFF;
 }
 
-.info_text{
+.info_text {
     margin-top: 15px;
 }
-.just{
+
+.just {
     margin-left: 10px;
-    display:inline;
+    display: inline;
 
 }
-.green_field{
+
+.green_field {
     margin-left: 10px;
-    display:inline;
+    display: inline;
     height: 50px;
     text-align: center;
     background: #718E67;
     border: 1px solid #718E67;
     border-radius: 7px;
 }
-.general{
+
+.general {
     box-sizing: border-box;
 
     width: 80%;
@@ -40,7 +43,13 @@
     border-radius: 13px;
 
 }
-.cards_admin{
+.zayavka{
+    margin-left: 10px;
+    display: inline-block;
+    overflow: scroll;
+    height: 39px;
+}
+.cards_admin {
     overflow: scroll;
     box-sizing: border-box;
 
@@ -54,11 +63,12 @@
 
 }
 
-.head_info{
+.head_info {
     margin-top: 30px;
     margin-left: 10%;
 }
-.search{
+
+.search {
 
     width: 80%;
     height: 96px;
