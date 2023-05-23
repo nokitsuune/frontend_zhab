@@ -387,7 +387,7 @@ function Admin() {
                         />
                     </div>
                     {/*СПИСОК КЛИЕНТОВ*/}
-                    <div style={{marginTop: '45px', overflow: "scroll"}}>
+                    <div style={{marginTop: '45px', overflow: "auto", height: "450px"}}>
                         {
                             Object.entries(items).map(([id, client]) => (
                                 <div key={id}>

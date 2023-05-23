@@ -1,5 +1,5 @@
 .schet_spis{
-    overflow: scroll;
+    overflow: auto;
     height: 57px;
     width: 350px;
     border: 1px solid #909090;
@@ -161,11 +161,11 @@
 }
 .cards{
     height: 180px;
-    overflow: scroll;
+    overflow: auto;
 }
 .accounts{
     height: 200px;
-    overflow: scroll;
+    overflow: auto;
 }
 .text_wal{
     height: 44px;

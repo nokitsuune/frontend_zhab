@@ -122,7 +122,6 @@ export default function Wallet() {
 
             const formData = new FormData()
 
-            console.log(GetRandomAccount())
 
             formData.append('authuser', pk)
             setAccNum(GetRandomAccount())

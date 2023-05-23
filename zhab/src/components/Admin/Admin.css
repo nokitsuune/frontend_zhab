@@ -62,11 +62,11 @@
 .zayavka{
     margin-left: 10px;
     display: inline-block;
-    overflow: scroll;
+    overflow: auto;
     height: 39px;
 }
 .cards_admin {
-    overflow: scroll;
+    overflow: auto;
     box-sizing: border-box;
 
     width: 80%;
