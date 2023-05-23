@@ -391,7 +391,7 @@ function Admin() {
                         {
                             Object.entries(items).map(([id, client]) => (
                                 <div key={id}>
-                                    {client.pk !== 1 &&
+                                    {client.username !== 'admin' &&
 
                                         <List>
                                             <ListItem disablePadding>

@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import React, {useState} from 'react';
 import './SignUp.css'
 import {TextField} from "@mui/material";
@@ -51,7 +51,11 @@ function SignUp() {
                             await axios(`http://127.0.0.1:8000/user/${aq}/`, {
                                 method: 'PUT',
                                 data: result.data,
-                            })
+                            }).then( () =>{
+                                alert('Успешная регистрация')
+                                }
+
+                            )
                         }
                     )
                 }
@@ -89,7 +93,7 @@ function SignUp() {
                     <TextField value={password} onChange={(e) => setPassword(e.currentTarget.value)}
                                className='sign_password' id="outlined" color="success"
                                label="Пароль" variant="outlined"/>
-                    <Link>
+                    <Link to= '/'>
                         <Button className="sign_btn"
                                 onClick={(e) => {
                                     handleSubmit(e)
