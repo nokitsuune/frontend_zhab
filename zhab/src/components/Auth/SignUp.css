@@ -5,6 +5,13 @@
     left: 5%;
     top: 150px;
 }
+.username{
+    position: absolute;
+    width: 89%;
+    height: 96px;
+    left: 5%;
+    top: 150px;
+}
 .surname{
     position: absolute;
     width: 42%;
@@ -52,7 +59,7 @@
 .sign_form{
     position: absolute;
     width: 80%;
-    height: 600px;
+    height: 700px;
     left: 10%;
     top: 10%;
 

@@ -1,14 +1,22 @@
 .info {
     position: absolute;
+
+    min-width: 450px;
     width: 50%;
+    max-width: 600px;
     height: 600px;
-    left: 44%;
+    margin-left: 40%;
     top: 120px;
 
     background: #3A4339;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
     border-radius: 49px;
     color: #FFFFFF;
+}
+@media screen and (max-width: 800px) {
+    div.info {
+        display: none;
+    }
 }
 
 .info_text {
@@ -19,6 +27,14 @@
     margin-left: 10px;
     display: inline;
 
+}
+.text_clients {
+    position: absolute;
+    margin-left: 50px;
+    margin-top: 30px;
+
+    font-weight: 700;
+    line-height: 44px;
 }
 
 .green_field {

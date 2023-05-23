@@ -7,7 +7,17 @@ import logo from "../../images/logo.png";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import {Card, InputAdornment, List, ListItem, ListItemButton, ListItemText, Modal, TextField} from "@mui/material";
+import {
+    Card,
+    InputAdornment,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Modal,
+    TextField
+} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
@@ -24,6 +34,7 @@ import {Title} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import {LOGOUT} from "../AuthRedux/actions";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 
 function Admin() {
@@ -32,6 +43,7 @@ function Admin() {
     const [req, setReq] = useState(0)
     const [selectedClient, setSelectedClient] = useState(0)
     const [contract, setContract] = useState([])
+    const [cards, setCards] = useState([])
     const [acc, setAccount] = useState([])
     const [contracts, setContracts] = useState([])
     const [item, setItem] = useState([])
@@ -79,7 +91,7 @@ function Admin() {
         setLoading(false)
         AdminIsOnline()
         console.log(items)
-    }, [search]);
+    }, [pk]);
 
     async function AcceptRequest(contrId) {
         await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
@@ -208,6 +220,15 @@ function Admin() {
 
 
     }
+    function GetCards() {
+        fetch(`http://127.0.0.1:8000/card/`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setCards(result);
+                console.log(result);
+            })
+    }
 
     function GetContract(contrId) {
 
@@ -334,13 +355,14 @@ function Admin() {
                 {/*Клиенты*/}
                 <div className="wallet">
                     <div>
-                        <h4 className='text_wal'>Клиенты</h4>
+                        <h4 className='text_clients'>Клиенты</h4>
                         {/*ОБНОВИТЬ*/}
                         <IconButton
                             onClick={(e) => {
                                 AdminIsOnline()
                                 GetContracts(selectedClient)
                                 GetAccount(selectedClient)
+                                GetCards()
                             }}
                             style={{marginTop: '33px', left: '80%'}}>
                             <CachedIcon/>
@@ -369,24 +391,27 @@ function Admin() {
                         {
                             Object.entries(items).map(([id, client]) => (
                                 <div key={id}>
+                                    {client.pk !== 1 &&
 
-                                    <List>
-                                        <ListItem disablePadding>
-                                            <ListItemButton
-                                                onClick={(e) => {
-                                                    AdminIsOnline()
-                                                    GetUser(client.pk)
-                                                    GetContracts(client.pk)
-                                                    GetAccount(client.pk)
-                                                    setSelectedClient(client.pk)
+                                        <List>
+                                            <ListItem disablePadding>
+                                                <ListItemButton
+                                                    onClick={(e) => {
+                                                        AdminIsOnline()
+                                                        GetUser(client.pk)
+                                                        GetContracts(client.pk)
+                                                        GetAccount(client.pk)
+                                                        setSelectedClient(client.pk)
+                                                        GetCards()
 
-                                                }}>
-                                                <ListItemText sx={{marginLeft: '25px'}} primary={client.username}/>
+                                                    }}>
+                                                    <ListItemText sx={{marginLeft: '25px'}} primary={client.username}/>
 
-                                            </ListItemButton>
-                                        </ListItem>
+                                                </ListItemButton>
+                                            </ListItem>
 
-                                    </List>
+                                        </List>
+                                    }
                                 </div>
                             ))
                         }
@@ -434,6 +459,39 @@ function Admin() {
 
 
                     <div className='cards_admin'>
+                        {
+                            Object.entries(contracts).map(([id, contr]) => (
+
+                                Object.entries(cards).map(([card_pk, card]) => (
+
+                                        <div key={card_pk}>
+                                            {contr.pk === card.contract &&
+                                                <List>
+
+                                                    <ListItem  disablePadding>
+
+
+                                                            <ListItemText
+                                                                sx={{marginLeft: '25px',marginTop:"23px"}}
+                                                                primary={card.number_card}/>
+                                                            <br />
+
+
+
+
+                                                    </ListItem>
+
+
+                                                </List>
+
+
+                                            }
+
+                                        </div>
+                                    ))
+                                )
+                            )
+                        }
 
                     </div>
                     <Modal

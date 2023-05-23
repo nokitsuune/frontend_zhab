@@ -1,12 +1,14 @@
 import {Link, Navigate} from 'react-router-dom';
 import React, {useState} from 'react';
 import './LogIn.css'
-import {TextField} from "@mui/material";
+import {FormControl, InputAdornment, InputLabel, OutlinedInput, TextField} from "@mui/material";
 import Button from '@mui/material/Button';
 import login from '../../images/login.png';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_PK, ADD_USER} from "../AuthRedux/actions";
+import IconButton from "@mui/material/IconButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 function LogIn() {
 
@@ -18,6 +20,13 @@ function LogIn() {
     const [user, setUser] = useState(0);
     const [username, setUsername]= useState('');
     const [password, setPassword]=useState('');
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
     async function Authorization1(e){
         const formData = new FormData()
         formData.append('username', username)
@@ -77,39 +86,63 @@ function LogIn() {
                                        id="outlined"
                                        color="success"
                                        label="Логин" variant="outlined"/>
-                            <TextField value={password} onChange={(e) => setPassword(e.currentTarget.value)}
+                            <FormControl variant="outlined" className="password">
+                            <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
+
+                            <OutlinedInput
+
+                                value={password}
+                                onChange={(e) => setPassword(e.currentTarget.value)}
+                                id="outlined-adornment-password"
+                                type={showPassword ? 'text' : 'password'}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password"
+                            />
+                            </FormControl>
+                            {/*<TextField value={password} onChange={(e) => setPassword(e.currentTarget.value)}
                                        className='password'
                                        id="outlined"
                                        color="success"
                                        label="Пароль"
                                        variant="outlined"
 
-                            />
+                            />*/}
                         </div>
                     }
 
 
 
                     <div>
-                        {username === 'admin' ?
+                        {/*{username === 'admin' ?
                             <Link to='/admin'>
                                 <Button onClick={(e) => handleSubmit(e)}
                                         className='btn_log'
                                         variant="contained"
-                                        htmlType="submit" size="lg">
+                                        htmltype="submit" size="lg">
                                     Админ
                                 </Button>
                             </Link>
-                            :
+                            :*/}
                             <Link to='/main'>
                                 <Button onClick={(e) => handleSubmit(e)}
                                         className='btn_log'
                                         variant="contained"
-                                        htmlType="submit" size="lg">
+                                        htmltype="submit" size="lg">
                                     Войти
                                 </Button>
                             </Link>
-                        }
+
 
 
                     </div>

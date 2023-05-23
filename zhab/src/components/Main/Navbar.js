@@ -14,10 +14,12 @@ import MenuItem from '@mui/material/MenuItem';
 
 import logo from '../../images/logo.png';
 import './main.css'
-import {Badge, Modal} from "@mui/material";
+import {Badge, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Modal} from "@mui/material";
 import {Link, useMatch, useResolvedPath} from "react-router-dom";
 import {LOGOUT} from "../AuthRedux/actions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 
 
@@ -25,10 +27,14 @@ export default function Navbar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const [open, setOpen] = React.useState(false);
+    const [declined_contracts, setDeclinedContracts] = useState([])
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const dispatch = useDispatch()
+    const {
+        pk
+    } = useSelector((state) => state.user);
 
 
     const handleOpenUserMenu = (event) => {
@@ -39,6 +45,15 @@ export default function Navbar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    function GetDeclinedContracts() {
+        fetch(`http://127.0.0.1:8000/contract/?status=3&auth_user=${pk}`, {
+            method: "GET"})
+            .then(response => response.json())
+            .then((result) => {
+                setDeclinedContracts(result);
+                console.log(result);
+            })
+    }
 
     return (
 
@@ -86,15 +101,18 @@ export default function Navbar() {
                         {/*Notification and user*/}
                         <Box sx={{ flexGrow: 0 }}>
                             {/*Notification start*/}
-                            {/*<IconButton onClick={handleOpen} sx={{color: '#718E67', height: '50px', width:'50px'}}
+                            <IconButton onClick={(e) => {
+                                handleOpen()
+                                GetDeclinedContracts()
+                            }}sx={{color: '#718E67', height: '50px', width:'50px'}}
                                         size="large"
                                         aria-label="show 17 new notifications"
                                         color="inherit"
                             >
-                                <Badge badgeContent={2} color="error">
+
                                     <NotificationsIcon className="icon" />
-                                </Badge>
-                            </IconButton>*/}
+
+                            </IconButton>
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -109,14 +127,37 @@ export default function Navbar() {
                                     }} >
                                         Все уведомления
                                     </Typography>
-                                    <Typography id="modal-modal-description" sx={{ mt: 2, fontWeight: 700,
-                                        marginTop: '20px',
-                                        marginLeft: '30px',
-                                        marginBottom: '20px',
+                                    <div style={{overflow:"scroll", height: "100px"}}>
+                                    {
+                                        Object.entries(declined_contracts).map(([id, contr]) => (
+                                            <div key={id}>
+                                                    <List>
 
-                                    }}>
-                                        Пока уведомлений нет
-                                    </Typography>
+                                                        <ListItem  disablePadding>
+                                                                <ListItemIcon sx={{marginLeft: '27px', marginTop: '20px'}}>
+                                                                    <img src={logo} width={40} height={40} />
+                                                                    <ListItemText sx={{marginLeft: '10px'}}>Заявка на создание счета отклонена :(</ListItemText>
+
+                                                                </ListItemIcon>
+
+
+
+
+
+                                                        </ListItem>
+
+
+                                                    </List>
+
+
+
+
+                                            </div>
+                                            )
+                                        )
+                                    }
+                                    </div>
+
                                 </Box>
                             </Modal>
 

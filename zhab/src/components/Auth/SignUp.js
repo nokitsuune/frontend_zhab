@@ -77,7 +77,7 @@ function SignUp() {
                                label="Фамилия" variant="outlined"/>
                     <TextField value={username}
                                onChange={(e) => setUsername(e.currentTarget.value)}
-                               className='password' id="outlined" color="success"
+                               className="username" id="outlined" color="success"
                                label="Логин" variant="outlined"/>
                     <TextField value={email} onChange={(e) => setEmail(e.currentTarget.value)}
                                className='name' id="outlined" color="success"
@@ -95,7 +95,7 @@ function SignUp() {
                                     handleSubmit(e)
                                 }}
                                 variant="contained"
-                                htmlType="submit">
+                                htmltype="submit">
                             Регистрация
                         </Button>
                     </Link>
