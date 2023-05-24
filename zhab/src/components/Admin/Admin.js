@@ -63,9 +63,10 @@ function Admin() {
         setAnchorElUser(event.currentTarget);
     };
 
-    function getFilter(search) {
+
+    function getFilter (search) {
         if (search) {
-            return `?search=${search}`
+            return `?last_name=&search=${search}`
         }
         return ('')
     }
@@ -91,7 +92,7 @@ function Admin() {
         setLoading(false)
         AdminIsOnline()
         console.log(items)
-    }, [pk]);
+    }, [search]);
 
     async function AcceptRequest(contrId) {
         await axios(`http://127.0.0.1:8000/contract/${contrId}/`, {
@@ -370,6 +371,7 @@ function Admin() {
                         {/*ПОИСК*/}
                         <TextField
                             className="search"
+                            onChange={(e)=>setSearch(e.currentTarget.value)}
                             id="filled-search"
                             color="success"
                             label="Поиск"

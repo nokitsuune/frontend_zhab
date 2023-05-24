@@ -81,6 +81,13 @@ export default function Wallet() {
                 setAccNum(resp)
             })
         }
+        if (GetRandomCard() === 0) {
+            fetch('http://127.0.0.1:8000/getRandomCard/', {
+                method: "GET",
+            }).then((response) => response.json()).then((resp) => {
+                setCardNum(resp)
+            })
+        }
         setLoading(false)
 
 
@@ -98,9 +105,9 @@ export default function Wallet() {
 
     }
 
-    async function SendKafkaMessage(authuser, account_num, balance) {
+    async function SendKafkaMessage(authuser, cardNum, balance) {
         try {
-            const response = await fetch(`http://localhost:8000/grpc/?id_card=1&number_card=67890&cvc=20000&pin=456&contract_id=789`, {
+            const response = await fetch(`http://localhost:8000/grpc/?id_card=${authuser}&number_card=${cardNum}&cvc=20000&pin=456&contract_id=1`, {
                 method: "GET",
             });
             console.log('Status:', response.status);
@@ -114,10 +121,21 @@ export default function Wallet() {
             return false;
         }
     }
+    async function GetRandomCard() {
+
+        await fetch('http://127.0.0.1:8000/getRandomCard/', {
+            method: "GET",
+        }).then((response) => response.json()).then((resp) => {
+            setCardNum(resp)
+        })
+        return cardNum
+
+
+    }
 
 
     async function CreateAccount(e) {
-        const bool = await SendKafkaMessage(pk, accNum, 20000);
+        const bool = await SendKafkaMessage(pk, cardNum, 20000);
         if (bool){
 
             const formData = new FormData()
@@ -125,6 +143,7 @@ export default function Wallet() {
 
             formData.append('authuser', pk)
             setAccNum(GetRandomAccount())
+
             formData.append('account_num', accNum)
             formData.append('balance', 20000)
 
@@ -170,17 +189,7 @@ export default function Wallet() {
         setCardContract(contrpk)
         console.log(contrpk)
     }
-    function GetRandomCard() {
 
-        fetch('http://127.0.0.1:8000/getRandomCard/', {
-            method: "GET",
-        }).then((response) => response.json()).then((resp) => {
-            setCardNum(resp)
-        })
-        return cardNum
-
-
-    }
     function GetRandomCVC() {
 
         fetch('http://127.0.0.1:8000/getRandomCVC/', {
@@ -251,7 +260,7 @@ export default function Wallet() {
 
                                                         <ListItemText
                                                             secondary={card.number_card}/>
-                                                        <br />
+
                                                     </ListItemButton>
 
 
